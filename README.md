@@ -1,4 +1,5 @@
 # es-cookie
+[![NPM version](https://img.shields.io/npm/v/es-cookie.svg)](https://www.npmjs.org/package/es-cookie)
 
 A simple, lightweight module for handling cookies
 
