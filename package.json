@@ -1,6 +1,6 @@
 {
   "name": "es-cookie",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A JavaScript module for handling cookies",
   "files": [
     "src/*.js",
@@ -26,9 +26,9 @@
     "url": "http://theodorejb.me/"
   },
   "license": "MIT",
-  "homepage": "https://github.com/theodorejb/ScreenCalc",
+  "homepage": "https://github.com/theodorejb/es-cookie",
   "bugs": {
-    "url": "https://github.com/theodorejb/ScreenCalc/issues"
+    "url": "https://github.com/theodorejb/es-cookie/issues"
   },
   "repository": {
     "type": "git",
