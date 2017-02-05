@@ -16,7 +16,7 @@ describe('read', function () {
 
     it('should work with simple values', function () {
         document.cookie = 'c=v';
-	    assert.strictEqual(Cookies.get('c'), 'v');
+        assert.strictEqual(Cookies.get('c'), 'v');
     });
 
     it('should support empty values', function () {
@@ -30,17 +30,17 @@ describe('read', function () {
 
     it('should support equals sign in cookie value', function () {
         Cookies.set('c', 'foo=bar');
-	    assert.strictEqual(Cookies.get('c'), 'foo=bar', 'should include the entire value');
+        assert.strictEqual(Cookies.get('c'), 'foo=bar', 'should include the entire value');
     });
 
     it('should support percent character in cookie value', function () {
         Cookies.set('bad', 'foo%');
-	    assert.strictEqual(Cookies.get('bad'), 'foo%', 'should read the percent character');
+        assert.strictEqual(Cookies.get('bad'), 'foo%', 'should read the percent character');
     });
 
     it('should work with percent character in cookie value mixed with encoded values', function () {
         document.cookie = 'bad=foo%bar%22baz%bax%3D';
-	    assert.strictEqual(Cookies.get('bad'), 'foo%bar"baz%bax=');
+        assert.strictEqual(Cookies.get('bad'), 'foo%bar"baz%bax=');
     });
 
     it('should read all when cookies exist', function () {
@@ -60,12 +60,12 @@ describe('read', function () {
 
     it('should work with null', function () {
         Cookies.set('c', null);
-	    assert.strictEqual(Cookies.get('c'), 'null', 'should write value');
+        assert.strictEqual(Cookies.get('c'), 'null', 'should write value');
     });
 
     it('should work with undefined', function () {
         Cookies.set('c', undefined);
-	    assert.strictEqual(Cookies.get('c'), 'undefined', 'should write value');
+        assert.strictEqual(Cookies.get('c'), 'undefined', 'should write value');
     });
 
     it('should work when there is another unrelated cookie with malformed encoding in the name', function () {
@@ -95,7 +95,7 @@ describe('write', function () {
 
     it('should write value "[object Object]"', function () {
         Cookies.set('c', '[object Object]');
-	    assert.strictEqual(Cookies.get('c'), '[object Object]', 'should write value');
+        assert.strictEqual(Cookies.get('c'), '[object Object]', 'should write value');
     });
 
     it('should work with expires as days from now', function () {
@@ -132,9 +132,9 @@ describe('write', function () {
     });
 
     it('should support true secure option', function () {
-	    let expected = 'c=v; Path=/; Secure';
-	    let actual = Cookies.createCookieString('c', 'v', {secure: true});
-	    assert.strictEqual(actual, expected, 'should add secure attribute');
+        let expected = 'c=v; Path=/; Secure';
+        let actual = Cookies.createCookieString('c', 'v', {secure: true});
+        assert.strictEqual(actual, expected, 'should add secure attribute');
     });
 
     it('should support false secure option', function () {
@@ -144,7 +144,7 @@ describe('write', function () {
 
     it('should not set undefined attribute values', function () {
         assert.strictEqual(Cookies.createCookieString('c', 'v', {
-		    expires: undefined
+            expires: undefined
         }), 'c=v; Path=/', 'should not write undefined expires attribute');
 
         assert.strictEqual(Cookies.createCookieString('c', 'v', {
