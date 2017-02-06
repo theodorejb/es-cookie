@@ -27,18 +27,18 @@ function stringifyAttributes(attributes: CookieAttributes): string {
         + stringifyAttribute('Secure', attributes.secure);
 }
 
-export function createCookieString(key: string, value: string, attributes?: CookieAttributes): string {
-    return encodeURIComponent(key)
+export function encode(name: string, value: string, attributes: CookieAttributes): string {
+    return encodeURIComponent(name)
             .replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent) // allowed special characters
             .replace(/\(/g, '%28').replace(/\)/g, '%29') // replace opening and closing parens
         + '=' + encodeURIComponent(value)
             .replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent) // allowed special characters
-        + stringifyAttributes(Object.assign({path: '/'}, attributes));
+        + stringifyAttributes(attributes);
 }
 
-export function getAll(): {[key: string]: string} {
-    let result: {[key: string]: string} = {};
-    let cookies = document.cookie ? document.cookie.split('; ') : [];
+export function parse(cookieString: string): {[name: string]: string} {
+    let result: {[name: string]: string} = {};
+    let cookies = cookieString ? cookieString.split('; ') : [];
     let rdecode = /(%[0-9A-Z]{2})+/g;
 
     for (let i = 0; i < cookies.length; i++) {
@@ -60,14 +60,18 @@ export function getAll(): {[key: string]: string} {
     return result;
 }
 
-export function get(key: string): string | undefined {
-    return getAll()[key];
+export function getAll(): {[name: string]: string} {
+    return parse(document.cookie);
 }
 
-export function set(key: string, value: string, attributes?: CookieAttributes): void {
-    document.cookie = createCookieString(key, value, attributes);
+export function get(name: string): string | undefined {
+    return getAll()[name];
 }
 
-export function remove(key: string, attributes?: CookieAttributes): void {
-    set(key, '', Object.assign({}, attributes, {expires: -1}));
+export function set(name: string, value: string, attributes?: CookieAttributes): void {
+    document.cookie = encode(name, value, Object.assign({path: '/'}, attributes));
+}
+
+export function remove(name: string, attributes?: CookieAttributes): void {
+    set(name, '', Object.assign({}, attributes, {expires: -1}));
 }

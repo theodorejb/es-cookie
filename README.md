@@ -15,16 +15,22 @@ A simple, lightweight module for handling cookies
 
 ## Usage
 
-Import module:
+Import entire module:
 
 ```javascript
 import * as Cookies from 'es-cookie';
+
+Cookies.set('name', 'value');
+Cookies.get('name'); // => 'value'
 ```
 
-Create a cookie, valid across the entire site:
+Alternatively, just import the functions you need:
 
 ```javascript
-Cookies.set('name', 'value');
+import {set as setCookie, get as getCookie} from 'es-cookie';
+
+setCookie('name', 'value');
+getCookie('name'); // => 'value'
 ```
 
 Create a cookie that expires 7 days from now, valid across the entire site:
@@ -33,32 +39,46 @@ Create a cookie that expires 7 days from now, valid across the entire site:
 Cookies.set('name', 'value', { expires: 7 });
 ```
 
-Create an expiring cookie, valid to the path of the current page:
+## Functions
+
+### set
+
+Creates a new cookie. The first parameter is for the name, and the second for the value.
+The third parameter is optional and allows you to modify attributes for the new cookie
+(see the [Attributes section](#attributes) below).
 
 ```javascript
+// Create an expiring cookie, valid to the path of the current page:
 Cookies.set('name', 'value', { expires: 7, path: '' });
 ```
 
-Read cookie:
+### get
+
+Returns a single cookie with the specified name, or `undefined` if the cookie doesn't exist.
 
 ```javascript
 Cookies.get('name'); // => 'value'
 Cookies.get('nothing'); // => undefined
 ```
 
-Read all visible cookies:
+### getAll
+
+Returns an object containing all visible cookies.
 
 ```javascript
 Cookies.getAll(); // => { name: 'value' }
 ```
 
-Delete cookie:
+### remove
+
+Deletes a single cookie by name.
 
 ```javascript
 Cookies.remove('name');
 ```
 
-Delete a cookie valid to the path of the current page:
+*IMPORTANT! When removing a cookie, you must pass the exact same path and domain attributes
+that were used to set the cookie, unless you're using the default attributes.*
 
 ```javascript
 Cookies.set('name', 'value', { path: '' });
@@ -66,21 +86,33 @@ Cookies.remove('name'); // fail!
 Cookies.remove('name', { path: '' }); // removed!
 ```
 
-*IMPORTANT! when deleting a cookie, you must pass the exact same path and domain attributes that was used to set the cookie, unless you're relying on the [default attributes](#cookie-attributes).*
-
 *Note: Removing a non-existant cookie does not raise an exception or return a value.*
 
-## Encoding
+### parse
 
-This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1) compliant. All special characters that are not allowed in the cookie-name or cookie-value are encoded with each one's UTF-8 Hex equivalent using [percent-encoding](http://en.wikipedia.org/wiki/Percent-encoding).
+Parses a cookie string (e.g. `document.cookie`) and returns the names/values as an object.
 
-The only character in cookie names or values that is allowed and still encoded is the percent `%` character. It is escaped in order to interpret percent input as literal. Please note that the default encoding/decoding strategy is meant to be interoperable between cookies that are read/written by es-cookie.
+```javascript
+Cookies.parse('c=v; name=value'); // => {c: 'v', name: 'value'}
+```
+
+### encode
+
+Takes a name, value, and attributes object and returns an encoded string which can be used to create a new cookie.
+
+```javascript
+Cookies.encode('c', 'v', {secure: true}); // => 'c=v; Secure'
+```
 
 ## Attributes
 
 ### expires
 
-Define when the cookie will be removed. Value can be a [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) which will be interpreted as days from time of creation or a [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) instance. If omitted, the cookie becomes a session cookie.
+Define when the cookie will be removed. Value can be a
+[`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+which will be interpreted as days from time of creation or a
+[`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
+instance. If omitted, the cookie becomes a session cookie.
 
 To create a cookie that expires in less than a day, use a Date object.
 
@@ -92,11 +124,16 @@ To create a cookie that expires in less than a day, use a Date object.
 Cookies.set('name', 'value', { expires: 365 });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name');
+
+let twoHoursFromNow = new Date();
+twoHoursFromNow.setHours(twoHoursFromNow.getHours() + 2);
+Cookies.set('name', 'value', { expires: twoHoursFromNow });
 ```
 
 ### path
 
-A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) indicating the path where the cookie is visible.
+A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+indicating the path where the cookie is visible.
 
 **Default:** `/`
 
@@ -110,7 +147,8 @@ Cookies.remove('name', { path: '' });
 
 ### domain
 
-A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) indicating a valid domain where the cookie should be visible. The cookie will also be visible to all subdomains.
+A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+indicating a valid domain where the cookie should be visible. The cookie will also be visible to all subdomains.
 
 **Default:** Cookie is visible only to the domain or subdomain of the page where the cookie was created.
 
@@ -134,8 +172,17 @@ Either `true` or `false`, indicating if the cookie transmission requires a secur
 ```javascript
 Cookies.set('name', 'value', { secure: true });
 Cookies.get('name'); // => 'value'
-Cookies.remove('name', { secure: true });
+Cookies.remove('name');
 ```
+
+## Encoding
+
+This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1) compliant.
+Special characters that are not allowed in the cookie name or value are encoded with their
+UTF-8 Hex equivalent using [percent-encoding](http://en.wikipedia.org/wiki/Percent-encoding).
+
+The only character allowed in cookie names or values that is still encoded is the
+percent (`%`) character. It is escaped in order to interpret percent input as literal.
 
 ## Author
 

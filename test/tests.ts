@@ -11,6 +11,13 @@ let cleanup = function () {
     });
 };
 
+describe('parse', function () {
+    it('should be able to parse a cookie string', function () {
+        let actual = Cookies.parse('c=v; name=value');
+        assert.deepEqual(actual, {c: 'v', name: 'value'});
+    });
+});
+
 describe('read', function () {
     afterEach(cleanup);
 
@@ -21,21 +28,21 @@ describe('read', function () {
 
     it('should support empty values', function () {
         Cookies.set('c', '');
-        assert.strictEqual(Cookies.get('c'), '', 'should return value');
+        assert.strictEqual(Cookies.get('c'), '');
     });
 
     it('should return undefined for non-existant cookies', function () {
-        assert.strictEqual(Cookies.get('whatever'), undefined, 'return undefined');
+        assert.strictEqual(Cookies.get('whatever'), undefined);
     });
 
     it('should support equals sign in cookie value', function () {
         Cookies.set('c', 'foo=bar');
-        assert.strictEqual(Cookies.get('c'), 'foo=bar', 'should include the entire value');
+        assert.strictEqual(Cookies.get('c'), 'foo=bar');
     });
 
     it('should support percent character in cookie value', function () {
         Cookies.set('bad', 'foo%');
-        assert.strictEqual(Cookies.get('bad'), 'foo%', 'should read the percent character');
+        assert.strictEqual(Cookies.get('bad'), 'foo%');
     });
 
     it('should work with percent character in cookie value mixed with encoded values', function () {
@@ -46,63 +53,51 @@ describe('read', function () {
     it('should read all when cookies exist', function () {
         Cookies.set('c', 'v');
         Cookies.set('foo', 'bar');
-        assert.deepEqual(Cookies.getAll(), { c: 'v', foo: 'bar' }, 'returns object containing all cookies');
+        assert.deepEqual(Cookies.getAll(), { c: 'v', foo: 'bar' });
     });
 
-    it('should read all when there are no cookies', function () {
-        assert.deepEqual(Cookies.getAll(), {}, 'returns empty object');
+    it('should return an empty object when there are no cookies', function () {
+        assert.deepEqual(Cookies.getAll(), {});
     });
 
     it('should support RFC 6265 - reading cookie-octet enclosed in DQUOTE', function () {
         document.cookie = 'c="v"';
-        assert.strictEqual(Cookies.get('c'), 'v', 'should simply ignore quoted strings');
+        assert.strictEqual(Cookies.get('c'), 'v');
     });
 
     it('should work with null', function () {
         Cookies.set('c', null);
-        assert.strictEqual(Cookies.get('c'), 'null', 'should write value');
+        assert.strictEqual(Cookies.get('c'), 'null');
     });
 
     it('should work with undefined', function () {
         Cookies.set('c', undefined);
-        assert.strictEqual(Cookies.get('c'), 'undefined', 'should write value');
+        assert.strictEqual(Cookies.get('c'), 'undefined');
     });
 
-    it('should work when there is another unrelated cookie with malformed encoding in the name', function () {
+    it('should not throw error when an unrelated cookie name has malformed encoding', function () {
         document.cookie = 'BS%BS=1';
         document.cookie = 'c=v';
-        assert.strictEqual(Cookies.get('c'), 'v', 'should not throw a URI malformed exception when retrieving a single cookie');
-        assert.deepEqual(Cookies.getAll(), { c: 'v' }, 'should not throw a URI malformed exception when retrieving all cookies');
+        assert.strictEqual(Cookies.get('c'), 'v');
+        assert.deepEqual(Cookies.getAll(), {c: 'v'});
         document.cookie = 'BS%BS=1; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
     });
 
-    it('should work when there is another unrelated cookie with malformed encoding in the value', function () {
+    it('should not throw error when an unrelated cookie value has malformed encoding', function () {
         document.cookie = 'invalid=%A1';
         document.cookie = 'c=v';
-        assert.strictEqual(Cookies.get('c'), 'v', 'should not throw a URI malformed exception when retrieving a single cookie');
-        assert.deepEqual(Cookies.getAll(), { c: 'v' }, 'should not throw a URI malformed exception when retrieving all cookies');
+        assert.strictEqual(Cookies.get('c'), 'v');
+        assert.deepEqual(Cookies.getAll(), {c: 'v'});
         Cookies.remove('invalid', {path: ''});
     });
 });
 
-describe('write', function () {
-    afterEach(cleanup);
-
-    it('should write string primitive', function () {
-        Cookies.set('c', 'v');
-        assert.strictEqual(Cookies.get('c'), 'v', 'should write value');
-    });
-
-    it('should write value "[object Object]"', function () {
-        Cookies.set('c', '[object Object]');
-        assert.strictEqual(Cookies.get('c'), '[object Object]', 'should write value');
-    });
-
+describe('encode', function () {
     it('should work with expires as days from now', function () {
         let twentyOneDaysFromNow = new Date();
         twentyOneDaysFromNow.setDate(twentyOneDaysFromNow.getDate() + 21);
-        let actual = Cookies.createCookieString('c', 'v', { expires: 21 });
-        assert.strictEqual(actual, 'c=v; Expires=' + twentyOneDaysFromNow.toUTCString() + '; Path=/');
+        let actual = Cookies.encode('c', 'v', { expires: 21 });
+        assert.strictEqual(actual, 'c=v; Expires=' + twentyOneDaysFromNow.toUTCString());
     });
 
     it('should work with expires as fraction of a day', function () {
@@ -118,46 +113,59 @@ describe('write', function () {
             }
         };
 
-        let expires = new Date(getAttributeValue(Cookies.createCookieString('c', 'v', { expires: 0.5 }), 'Expires'));
+        let expires = new Date(getAttributeValue(Cookies.encode('c', 'v', { expires: 0.5 }), 'Expires'));
         let now = new Date();
         let message = '"' + expires.getTime() + '" should be greater than "' + now.getTime() + '"';
         assert.strictEqual(expires.getTime() > now.getTime() + 1000, true, message);
     });
 
     it('should support expires option as Date instance', function () {
-        let sevenDaysFromNow = new Date();
-        sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-        let actual = Cookies.createCookieString('c', 'v', { expires: sevenDaysFromNow });
-        assert.strictEqual(actual, 'c=v; Expires=' + sevenDaysFromNow.toUTCString() + '; Path=/');
+        let twoHoursFromNow = new Date();
+        twoHoursFromNow.setHours(twoHoursFromNow.getHours() + 2);
+        let actual = Cookies.encode('c', 'v', { expires: twoHoursFromNow });
+        assert.strictEqual(actual, 'c=v; Expires=' + twoHoursFromNow.toUTCString());
     });
 
     it('should support true secure option', function () {
-        let expected = 'c=v; Path=/; Secure';
-        let actual = Cookies.createCookieString('c', 'v', {secure: true});
-        assert.strictEqual(actual, expected, 'should add secure attribute');
+        let actual = Cookies.encode('c', 'v', {secure: true});
+        assert.strictEqual(actual, 'c=v; Secure');
     });
 
     it('should support false secure option', function () {
-        let actual = Cookies.createCookieString('c', 'v', {secure: false});
-        assert.strictEqual(actual, 'c=v; Path=/', 'false should not modify path in cookie string');
+        let actual = Cookies.encode('c', 'v', {path: '/', secure: false});
+        assert.strictEqual(actual, 'c=v; Path=/');
     });
 
     it('should not set undefined attribute values', function () {
-        assert.strictEqual(Cookies.createCookieString('c', 'v', {
+        assert.strictEqual(Cookies.encode('c', 'v', {
             expires: undefined
-        }), 'c=v; Path=/', 'should not write undefined expires attribute');
+        }), 'c=v', 'should not write undefined expires attribute');
 
-        assert.strictEqual(Cookies.createCookieString('c', 'v', {
+        assert.strictEqual(Cookies.encode('c', 'v', {
             path: undefined
         }), 'c=v', 'should not write undefined path attribute');
 
-        assert.strictEqual(Cookies.createCookieString('c', 'v', {
+        assert.strictEqual(Cookies.encode('c', 'v', {
             domain: undefined
-        }), 'c=v; Path=/', 'should not write undefined domain attribute');
+        }), 'c=v', 'should not write undefined domain attribute');
 
-        assert.strictEqual(Cookies.createCookieString('c', 'v', {
+        assert.strictEqual(Cookies.encode('c', 'v', {
             secure: undefined
-        }), 'c=v; Path=/', 'should not write undefined secure attribute');
+        }), 'c=v', 'should not write undefined secure attribute');
+    });
+});
+
+describe('write', function () {
+    afterEach(cleanup);
+
+    it('should write string primitive', function () {
+        Cookies.set('c', 'v');
+        assert.strictEqual(Cookies.get('c'), 'v');
+    });
+
+    it('should write value "[object Object]"', function () {
+        Cookies.set('c', '[object Object]');
+        assert.strictEqual(Cookies.get('c'), '[object Object]');
     });
 });
 
@@ -167,25 +175,41 @@ describe('remove', function () {
     it('should delete a cookie', function () {
         Cookies.set('c', 'v');
         Cookies.remove('c');
-        assert.strictEqual(document.cookie, '', 'should delete the cookie');
+        assert.strictEqual(document.cookie, '');
     });
 
-    it('should delete a cookie with attributes', function () {
-        let attributes = { path: '/' };
-        Cookies.set('c', 'v', attributes);
-        Cookies.remove('c', attributes);
-        assert.strictEqual(document.cookie, '', 'should delete the cookie');
+    it('should delete a cookie with matching attributes', function () {
+        let withoutPath = {path: ''};
+        let withPath = {path: '/'};
+
+        Cookies.set('c', 'v', withoutPath);
+        Cookies.remove('c', withPath);
+        assert.strictEqual(document.cookie, 'c=v'); // not removed
+        Cookies.remove('c', withoutPath);
+        assert.strictEqual(document.cookie, ''); // removed
+
+        Cookies.set('c', 'v', withPath);
+        Cookies.remove('c', withoutPath);
+        assert.strictEqual(document.cookie, 'c=v'); // not removed
+        Cookies.remove('c', withPath);
+        assert.strictEqual(document.cookie, ''); // removed
     });
 
     it('should not alter attributes object', function () {
         let attributes = {path: '/'};
         Cookies.set('c', 'v', attributes);
         Cookies.remove('c', attributes);
-        assert.deepEqual(attributes, {path: '/'}, "won't alter attributes object");
+        assert.deepEqual(attributes, {path: '/'});
+    });
+
+    it('should remove a secure cookie without extra attributes', function () {
+        Cookies.set('c', 'v', {secure: true});
+        Cookies.remove('c');
+        assert.strictEqual(document.cookie, '');
     });
 });
 
-describe('encode values', function () {
+describe('value encoding', function () {
     afterEach(cleanup);
 
     let specialValues = [
@@ -231,7 +255,7 @@ describe('encode values', function () {
     });
 });
 
-describe('encode names', function () {
+describe('name encoding', function () {
     afterEach(cleanup);
 
     let specialKeys = [
