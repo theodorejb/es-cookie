@@ -69,9 +69,9 @@ export function get(name: string): string | undefined {
 }
 
 export function set(name: string, value: string, attributes?: CookieAttributes): void {
-    document.cookie = encode(name, value, Object.assign({path: '/'}, attributes));
+    document.cookie = encode(name, value, {path: '/', ...attributes});
 }
 
 export function remove(name: string, attributes?: CookieAttributes): void {
-    set(name, '', Object.assign({}, attributes, {expires: -1}));
+    set(name, '', {...attributes, expires: -1});
 }

@@ -1,6 +1,6 @@
 {
   "name": "es-cookie",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A JavaScript module for handling cookies",
   "files": [
     "src/*.js",
@@ -10,6 +10,7 @@
   "types": "./src/es-cookie.d.ts",
   "keywords": [
     "cookies",
+    "typescript",
     "module",
     "commonjs",
     "rollup",
@@ -17,7 +18,7 @@
     "webpack"
   ],
   "scripts": {
-    "prepublish": "tsc && browserify node_modules/core-js/client/shim.min.js test/tests.js -o test/browser/testbundle.js",
+    "prepublish": "tsc && browserify test/tests.js -o test/browser/testbundle.js",
     "start": "http-server"
   },
   "author": {
@@ -38,7 +39,6 @@
     "@types/mocha": "^2.2.39",
     "@types/node": "^7.0.5",
     "browserify": "^14.0.0",
-    "core-js": "^2.4.1",
     "http-server": "^0.9.0",
     "mocha": "^3.2.0",
     "typescript": "^2.1.5"

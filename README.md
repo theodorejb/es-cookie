@@ -6,7 +6,7 @@ A simple, lightweight module for handling cookies
 * Includes TypeScript definitions
 * Works with Webpack, Rollup, and Browserify module bundlers
 * Fully compliant with [RFC 6265](https://tools.ietf.org/html/rfc6265)
-* No dependencies other than an `Object.assign` polyfill if using Internet Explorer ([core-js](https://github.com/zloirock/core-js) is recommended)
+* No dependencies
 * Originally based on js-cookie, but rewritten as a TypeScript module with a lean, type-safe API
 
 ## Installation
