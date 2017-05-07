@@ -65,16 +65,6 @@ describe('read', function () {
         assert.strictEqual(Cookies.get('c'), 'v');
     });
 
-    it('should work with null', function () {
-        Cookies.set('c', null);
-        assert.strictEqual(Cookies.get('c'), 'null');
-    });
-
-    it('should work with undefined', function () {
-        Cookies.set('c', undefined);
-        assert.strictEqual(Cookies.get('c'), 'undefined');
-    });
-
     it('should not throw error when an unrelated cookie name has malformed encoding', function () {
         document.cookie = 'BS%BS=1';
         document.cookie = 'c=v';
@@ -111,6 +101,8 @@ describe('encode', function () {
                     return split[1];
                 }
             }
+
+            return '';
         };
 
         let expires = new Date(getAttributeValue(Cookies.encode('c', 'v', { expires: 0.5 }), 'Expires'));
