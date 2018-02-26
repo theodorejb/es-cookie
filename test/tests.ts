@@ -3,7 +3,7 @@ import * as assert from 'assert';
 
 let cleanup = function () {
     // Remove the cookies created using es-cookie default attributes
-    Object.keys(Cookies.getAll()).forEach(Cookies.remove);
+    Object.keys(Cookies.getAll()).forEach(c => Cookies.remove(c));
 
     // Remove the cookies created using browser default attributes
     Object.keys(Cookies.getAll()).forEach(function (cookie) {
