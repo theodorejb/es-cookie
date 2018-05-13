@@ -24,7 +24,8 @@ function stringifyAttributes(attributes: CookieAttributes): string {
     return stringifyAttribute('Expires', attributes.expires ? attributes.expires.toUTCString() : '')
         + stringifyAttribute('Domain', attributes.domain)
         + stringifyAttribute('Path', attributes.path)
-        + stringifyAttribute('Secure', attributes.secure);
+        + stringifyAttribute('Secure', attributes.secure)
+        + stringifyAttribute('SameSite', attributes.sameSite);
 }
 
 export function encode(name: string, value: string, attributes: CookieAttributes): string {

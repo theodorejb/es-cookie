@@ -86,7 +86,7 @@ Cookies.remove('name'); // fail!
 Cookies.remove('name', { path: '' }); // removed!
 ```
 
-*Note: Removing a non-existant cookie does not raise an exception or return a value.*
+*Note: Removing a nonexistant cookie does not raise an exception or return a value.*
 
 ### parse
 
@@ -173,6 +173,26 @@ Either `true` or `false`, indicating if the cookie transmission requires a secur
 Cookies.set('name', 'value', { secure: true });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name');
+```
+
+### sameSite
+
+A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+with a value of either `strict` or `lax`. When set, supporting browsers will only send the cookie if
+the request originates from the same website the cookie is from. This provides some protection against
+cross-site request forgery attacks (CSRF).
+
+The strict mode witholds the cookie from any kind of cross-site usage (including inbound links from
+external sites). The lax mode witholds the cookie on cross-domain subrequests (e.g. images or frames),
+but sends it whenever a user navigates safely from an external site (e.g. by following a link).
+
+**Default:** No same-site requirement is set.
+
+**Examples:**
+
+```javascript
+Cookies.set('name', 'value', { sameSite: 'strict' });
+Cookies.set('other', 'value', { sameSite: 'lax' });
 ```
 
 ## Encoding

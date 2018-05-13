@@ -118,6 +118,14 @@ describe('encode', function () {
         assert.strictEqual(actual, 'c=v; Expires=' + twoHoursFromNow.toUTCString());
     });
 
+    it('should support domain option', function () {
+        Cookies.set('c', 'v', { domain: 'example.com' });
+        assert.strictEqual(Cookies.get('c'), undefined);
+
+        let actual = Cookies.encode('c', 'v', { domain: 'localhost' });
+        assert.strictEqual(actual, 'c=v; Domain=localhost');
+    });
+
     it('should support true secure option', function () {
         let actual = Cookies.encode('c', 'v', {secure: true});
         assert.strictEqual(actual, 'c=v; Secure');
@@ -126,6 +134,14 @@ describe('encode', function () {
     it('should support false secure option', function () {
         let actual = Cookies.encode('c', 'v', {path: '/', secure: false});
         assert.strictEqual(actual, 'c=v; Path=/');
+    });
+
+    it('should support sameSite option', function() {
+        let strict = Cookies.encode('c', 'v', { sameSite: 'strict' });
+        assert.strictEqual(strict, 'c=v; SameSite=strict');
+
+        let lax = Cookies.encode('c', 'v', { sameSite: 'lax' });
+        assert.strictEqual(lax, 'c=v; SameSite=lax');
     });
 
     it('should not set undefined attribute values', function () {
@@ -144,6 +160,10 @@ describe('encode', function () {
         assert.strictEqual(Cookies.encode('c', 'v', {
             secure: undefined
         }), 'c=v', 'should not write undefined secure attribute');
+
+        assert.strictEqual(Cookies.encode('c', 'v', {
+            sameSite: undefined
+        }), 'c=v', 'should not write undefined SameSite attribute');
     });
 });
 

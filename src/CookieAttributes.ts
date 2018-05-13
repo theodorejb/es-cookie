@@ -20,4 +20,17 @@ export interface CookieAttributes {
      * if it is transmitted over a secure channel (typically HTTP over TLS).
      */
     secure?: boolean;
+
+    /**
+     * Only send the cookie if the request originates from the same website the
+     * cookie is from. This provides some protection against cross-site request
+     * forgery attacks (CSRF).
+     *
+     * The strict mode witholds the cookie from any kind of cross-site usage
+     * (including inbound links from external sites). The lax mode witholds
+     * the cookie on cross-domain subrequests (e.g. images or frames), but
+     * sends it whenever a user navigates safely from an external site (e.g.
+     * by following a link).
+     */
+    sameSite?: 'strict' | 'lax';
 }
