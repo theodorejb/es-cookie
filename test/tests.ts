@@ -291,6 +291,7 @@ describe('name encoding', function () {
         {key: '}', plain: '%7D', name: 'closing curly brackets'},
         {key: '	', plain: '%09', name: 'horizontal tab character'},
         {key: ' ', plain: '%20', name: 'space character'},
+        {key: '.', plain: '.', name: 'period'},
         {key: '#', plain: '#', name: 'sharp character'},
         {key: '$', plain: '$', name: 'dollar sign'},
         {key: '%', plain: '%25', name: 'percent character'},
