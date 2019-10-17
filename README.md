@@ -43,9 +43,9 @@ Cookies.set('name', 'value', { expires: 7 });
 
 ### set
 
-Creates a new cookie. The first parameter is for the name, and the second for the value.
-The third parameter is optional and allows you to modify attributes for the new cookie
-(see the [Attributes section](#attributes) below).
+Creates a new cookie. The first parameter is for the name, and the second
+for the value. The third parameter is optional and allows you to modify
+attributes for the new cookie (see the [Attributes section](#attributes) below).
 
 ```javascript
 // Create an expiring cookie, valid to the path of the current page:
@@ -77,8 +77,9 @@ Deletes a single cookie by name.
 Cookies.remove('name');
 ```
 
-*IMPORTANT! When removing a cookie, you must pass the exact same path and domain attributes
-that were used to set the cookie, unless you're using the default attributes.*
+*IMPORTANT! When removing a cookie, you must pass the exact same path and
+domain attributes that were used to set the cookie, unless you're using
+the default attributes.*
 
 ```javascript
 Cookies.set('name', 'value', { path: '' });
@@ -98,7 +99,8 @@ Cookies.parse('c=v; name=value'); // => {c: 'v', name: 'value'}
 
 ### encode
 
-Takes a name, value, and attributes object and returns an encoded string which can be used to create a new cookie.
+Takes a name, value, and attributes object and returns an encoded string
+which can be used to create a new cookie.
 
 ```javascript
 Cookies.encode('c', 'v', {secure: true}); // => 'c=v; Secure'
@@ -108,13 +110,11 @@ Cookies.encode('c', 'v', {secure: true}); // => 'c=v; Secure'
 
 ### expires
 
-Define when the cookie will be removed. Value can be a
-[`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
-which will be interpreted as days from time of creation or a
-[`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
-instance. If omitted, the cookie becomes a session cookie.
+Define when the cookie will be removed. Value can be a number which
+will be interpreted as days from time of creation or a `Date` instance.
+If omitted, the cookie becomes a session cookie.
 
-To create a cookie that expires in less than a day, use a Date object.
+To create a cookie that expires in less than a day, use a `Date` object.
 
 **Default:** Cookie is removed when the user closes the browser.
 
@@ -132,8 +132,7 @@ Cookies.set('name', 'value', { expires: twoHoursFromNow });
 
 ### path
 
-A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
-indicating the path where the cookie is visible.
+A string indicating the path where the cookie is visible.
 
 **Default:** `/`
 
@@ -147,8 +146,8 @@ Cookies.remove('name', { path: '' });
 
 ### domain
 
-A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
-indicating a valid domain where the cookie should be visible. The cookie will also be visible to all subdomains.
+A string indicating a valid domain where the cookie should be visible.
+The cookie will also be visible to all subdomains.
 
 **Default:** Cookie is visible only to the domain or subdomain of the page where the cookie was created.
 
@@ -177,16 +176,18 @@ Cookies.remove('name');
 
 ### sameSite
 
-A [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
-with a value of either `strict` or `lax`. When set, supporting browsers will only send the cookie if
-the request originates from the same website the cookie is from. This provides some protection against
-cross-site request forgery attacks (CSRF).
+A string with a value of either `strict`, `lax`, or `none`. When enabled,
+supporting browsers will only send the cookie if the request originates
+from the same website the cookie is from. This provides some protection
+against cross-site request forgery attacks (CSRF).
 
-The strict mode witholds the cookie from any kind of cross-site usage (including inbound links from
-external sites). The lax mode witholds the cookie on cross-domain subrequests (e.g. images or frames),
-but sends it whenever a user navigates safely from an external site (e.g. by following a link).
+The strict mode witholds the cookie from any kind of cross-site usage
+(including inbound links from external sites). The lax mode witholds the
+cookie on cross-domain subrequests (e.g. images or frames), but sends it
+whenever a user navigates safely from an external site (e.g. by following
+a link).
 
-**Default:** No same-site requirement is set.
+**Default:** No same-site requirement is set - the browser default will be used.
 
 **Examples:**
 
@@ -197,17 +198,19 @@ Cookies.set('other', 'value', { sameSite: 'lax' });
 
 ## Encoding
 
-This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1) compliant.
-Special characters that are not allowed in the cookie name or value are encoded with their
-UTF-8 Hex equivalent using [percent-encoding](http://en.wikipedia.org/wiki/Percent-encoding).
+This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1)
+compliant. Special characters that are not allowed in the cookie name or
+value are encoded with their UTF-8 Hex equivalent using
+[percent-encoding](http://en.wikipedia.org/wiki/Percent-encoding).
 
-The only character allowed in cookie names or values that is still encoded is the
-percent (`%`) character. It is escaped in order to interpret percent input as literal.
+The only character allowed in cookie names or values that is still encoded
+is the percent (`%`) character. It is escaped in order to interpret
+percent input as literal.
 
 ## Author
 
 Theodore Brown  
-<http://theodorejb.me>
+<https://theodorejb.me>
 
 ## License
 
