@@ -45,9 +45,15 @@ describe('read', function () {
         assert.strictEqual(Cookies.get('bad'), 'foo%');
     });
 
-    it('should work with percent character in cookie value mixed with encoded values', function () {
-        document.cookie = 'bad=foo%bar%22baz%bax%3D';
-        assert.strictEqual(Cookies.get('bad'), 'foo%bar"baz%bax=');
+    it('should not permit unencoded percent character in cookie value mixed with encoded values', function () {
+        document.cookie = 'bad=foo%bar%22baz%qux';
+        assert.strictEqual(Cookies.get('bad'), undefined);
+        document.cookie = 'bad=foo; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
+    });
+
+    it('should decode percent characters case insensitively', function () {
+        document.cookie = 'c=%d0%96';
+        assert.strictEqual(Cookies.get('c'), 'Ж');
     });
 
     it('should read all when cookies exist', function () {
@@ -66,11 +72,11 @@ describe('read', function () {
     });
 
     it('should not throw error when an unrelated cookie name has malformed encoding', function () {
-        document.cookie = 'BS%BS=1';
+        document.cookie = '%A1=foo';
         document.cookie = 'c=v';
         assert.strictEqual(Cookies.get('c'), 'v');
         assert.deepEqual(Cookies.getAll(), {c: 'v'});
-        document.cookie = 'BS%BS=1; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
+        document.cookie = '%A1=foo; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
     });
 
     it('should not throw error when an unrelated cookie value has malformed encoding', function () {

@@ -33,14 +33,15 @@ export function encode(name: string, value: string, attributes: CookieAttributes
             .replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent) // allowed special characters
             .replace(/\(/g, '%28').replace(/\)/g, '%29') // replace opening and closing parens
         + '=' + encodeURIComponent(value)
-            .replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent) // allowed special characters
+            // allowed special characters
+            .replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent)
         + stringifyAttributes(attributes);
 }
 
 export function parse(cookieString: string): {[name: string]: string} {
     let result: {[name: string]: string} = {};
     let cookies = cookieString ? cookieString.split('; ') : [];
-    let rdecode = /(%[0-9A-Z]{2})+/g;
+    let rdecode = /(%[\dA-F]{2})+/gi;
 
     for (let i = 0; i < cookies.length; i++) {
         let parts = cookies[i].split('=');
