@@ -32,5 +32,5 @@ export interface CookieAttributes {
      * sends it whenever a user navigates safely from an external site (e.g.
      * by following a link).
      */
-    sameSite?: 'strict' | 'lax';
+    sameSite?: 'strict' | 'lax' | 'none';
 }
