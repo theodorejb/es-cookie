@@ -1,4 +1,6 @@
-export interface CookieAttributes {
+export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes;
+
+interface BaseCookieAttributes {
     /**
      * A number will be interpreted as days from time of creation
      */
@@ -20,7 +22,11 @@ export interface CookieAttributes {
      * if it is transmitted over a secure channel (typically HTTP over TLS).
      */
     secure?: boolean;
+}
 
+type SameSiteCookieAttributes = LaxStrictSameSiteCookieAttributes | NoneSameSiteCookieAttributes;
+
+interface LaxStrictSameSiteCookieAttributes {
     /**
      * Only send the cookie if the request originates from the same website the
      * cookie is from. This provides some protection against cross-site request
@@ -32,5 +38,13 @@ export interface CookieAttributes {
      * sends it whenever a user navigates safely from an external site (e.g.
      * by following a link).
      */
-    sameSite?: 'strict' | 'lax' | 'none';
+    sameSite?: 'strict' | 'lax';
+}
+
+/**
+ * Cookies with `SameSite=None` must also specify 'Secure'
+ */
+interface NoneSameSiteCookieAttributes {
+    sameSite: 'none';
+    secure: true;
 }
