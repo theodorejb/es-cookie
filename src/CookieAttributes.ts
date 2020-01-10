@@ -1,27 +1,27 @@
-export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes
+export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes;
 
-export interface BaseCookieAttributes {
+interface BaseCookieAttributes {
     /**
      * A number will be interpreted as days from time of creation
      */
-    expires?: Date | number
+    expires?: Date | number;
 
     /**
      * Hosts to which the cookie will be sent
      */
-    domain?: string
+    domain?: string;
 
     /**
      * The cookie will only be included in an HTTP request if the request
      * path matches (or is a subdirectory of) the cookie's path attribute.
      */
-    path?: string
+    path?: string;
 
     /**
      * If enabled, the cookie will only be included in an HTTP request
      * if it is transmitted over a secure channel (typically HTTP over TLS).
      */
-    secure?: boolean
+    secure?: boolean;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface BaseCookieAttributes {
  * cookie is from. This provides some protection against cross-site request
  * forgery attacks (CSRF).
  */
-export type SameSiteCookieAttributes = LaxStrictSameSiteCookieAttributes | NoneSameSiteCookieAttributes
+type SameSiteCookieAttributes = LaxStrictSameSiteCookieAttributes | NoneSameSiteCookieAttributes;
 
 /**
  * The strict mode witholds the cookie from any kind of cross-site usage
@@ -38,14 +38,14 @@ export type SameSiteCookieAttributes = LaxStrictSameSiteCookieAttributes | NoneS
  * sends it whenever a user navigates safely from an external site (e.g.
  * by following a link).
  */
-export interface LaxStrictSameSiteCookieAttributes {
-    sameSite?: 'strict' | 'lax'
+interface LaxStrictSameSiteCookieAttributes {
+    sameSite?: 'strict' | 'lax';
 }
 
 /**
  * Cookies with `SameSite=None` must also specify 'Secure'
  */
-export interface NoneSameSiteCookieAttributes {
-    sameSite: 'none'
-    secure: true
+interface NoneSameSiteCookieAttributes {
+    sameSite: 'none';
+    secure: true;
 }
