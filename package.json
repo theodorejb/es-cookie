@@ -37,10 +37,10 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.0",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.12.24",
     "browserify": "^16.2.2",
-    "http-server": "^0.11.1",
-    "mocha": "^6.2.1",
-    "typescript": "^3.6.4"
+    "http-server": "^0.12.1",
+    "mocha": "^7.0.0",
+    "typescript": "^3.7.4"
   }
 }
