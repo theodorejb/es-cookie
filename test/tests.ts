@@ -149,8 +149,8 @@ describe('encode', function () {
         let lax = Cookies.encode('c', 'v', { sameSite: 'lax' });
         assert.strictEqual(lax, 'c=v; SameSite=lax');
 
-        let none = Cookies.encode('c', 'v', { sameSite: 'none' });
-        assert.strictEqual(none, 'c=v; SameSite=none');
+        let none = Cookies.encode('c', 'v', { sameSite: 'none', secure: true });
+        assert.strictEqual(none, 'c=v; SameSite=none; Secure');
     });
 
     it('should not set undefined attribute values', function () {
