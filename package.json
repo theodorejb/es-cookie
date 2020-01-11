@@ -6,8 +6,8 @@
     "src/*.js",
     "src/*.d.ts"
   ],
-  "main": "src/es-cookie.js",
-  "types": "./src/es-cookie.d.ts",
+  "main": "src/index.js",
+  "types": "./src/index.d.ts",
   "keywords": [
     "cookies",
     "typescript",
