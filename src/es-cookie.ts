@@ -1,5 +1,7 @@
 import {CookieAttributes} from './CookieAttributes';
 
+export {CookieAttributes};
+
 function stringifyAttribute(name: string, value: string | boolean | undefined): string {
     if (!value) {
         return '';

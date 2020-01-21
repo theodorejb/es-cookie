@@ -6,14 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2020-01-21
+### Added
+- `CookieAttributes` is now exported from main module for easier usage.
+
 ## [1.3.1] - 2020-01-10
 ### Changed
-- Use type system to enforce secure SameSite=None cookies (thanks [@rkrasiuk](https://github.com/rkrasiuk/))
+- Use type system to enforce secure SameSite=None cookies (thanks [@rkrasiuk](https://github.com/rkrasiuk/)).
 
 ## [1.3.0] - 2019-10-17
 ### Added
 - Support for the `none` SameSite cookie value.
-- Support for case insensitive URL encoding
+- Support for case insensitive URL encoding.
 
 ## [1.2.0] - 2018-05-13
 ### Added
@@ -35,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2017-02-05
 - Initial release
 
-[Unreleased]: https://github.com/theodorejb/es-cookie/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/theodorejb/es-cookie/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/theodorejb/es-cookie/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/theodorejb/es-cookie/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/theodorejb/es-cookie/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/theodorejb/es-cookie/compare/v1.1.1...v1.2.0

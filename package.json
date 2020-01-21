@@ -1,6 +1,6 @@
 {
   "name": "es-cookie",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "A JavaScript module for handling cookies",
   "files": [
     "src/*.js",
