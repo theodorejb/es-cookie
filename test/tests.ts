@@ -31,7 +31,7 @@ describe('read', function () {
         assert.strictEqual(Cookies.get('c'), '');
     });
 
-    it('should return undefined for non-existant cookies', function () {
+    it('should return undefined for nonexistent cookies', function () {
         assert.strictEqual(Cookies.get('whatever'), undefined);
     });
 

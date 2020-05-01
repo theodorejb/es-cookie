@@ -87,7 +87,7 @@ Cookies.remove('name'); // fail!
 Cookies.remove('name', { path: '' }); // removed!
 ```
 
-*Note: Removing a nonexistant cookie does not raise an exception or return a value.*
+*Note: Removing a nonexistent cookie does not raise an exception or return a value.*
 
 ### parse
 
@@ -181,8 +181,8 @@ supporting browsers will only send the cookie if the request originates
 from the same website the cookie is from. This provides some protection
 against cross-site request forgery attacks (CSRF).
 
-The strict mode witholds the cookie from any kind of cross-site usage
-(including inbound links from external sites). The lax mode witholds the
+The strict mode withholds the cookie from any kind of cross-site usage
+(including inbound links from external sites). The lax mode withholds the
 cookie on cross-domain subrequests (e.g. images or frames), but sends it
 whenever a user navigates safely from an external site (e.g. by following
 a link).

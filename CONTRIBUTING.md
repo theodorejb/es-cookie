@@ -2,7 +2,7 @@
 
 ## Bug reports
 
-[File an issue](https://github.com/theodorejb/es-cookie/issues) with a reproducable example of the problem.
+[File an issue](https://github.com/theodorejb/es-cookie/issues) with a reproducible example of the problem.
 
 ## Testing
 

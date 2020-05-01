@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "noUnusedLocals": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "declaration": true,
