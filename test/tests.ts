@@ -22,7 +22,7 @@ describe('read', function () {
     afterEach(cleanup);
 
     it('should work with simple values', function () {
-        document.cookie = 'c=v';
+        Cookies.set('c', 'v');
         assert.strictEqual(Cookies.get('c'), 'v');
     });
 
@@ -31,8 +31,19 @@ describe('read', function () {
         assert.strictEqual(Cookies.get('c'), '');
     });
 
+    // doesn't work in Internet Explorer and old versions of Edge
+    it('should work with multi-byte characters', function () {
+        Cookies.set('c', 'Ж');
+        assert.strictEqual(Cookies.get('c'), 'Ж');
+    });
+
     it('should return undefined for nonexistent cookies', function () {
         assert.strictEqual(Cookies.get('whatever'), undefined);
+    });
+
+    it('should support equals sign in cookie name', function () {
+        Cookies.set('c=', 'foo');
+        assert.strictEqual(Cookies.get('c='), 'foo');
     });
 
     it('should support equals sign in cookie value', function () {
@@ -41,19 +52,15 @@ describe('read', function () {
     });
 
     it('should support percent character in cookie value', function () {
-        Cookies.set('bad', 'foo%');
-        assert.strictEqual(Cookies.get('bad'), 'foo%');
+        Cookies.set('foo', 'baz%');
+        Cookies.set('bar', '%A1');
+        assert.strictEqual(Cookies.get('foo'), 'baz%');
+        assert.strictEqual(Cookies.get('bar'), '%A1');
     });
 
-    it('should not permit unencoded percent character in cookie value mixed with encoded values', function () {
-        document.cookie = 'bad=foo%bar%22baz%qux';
-        assert.strictEqual(Cookies.get('bad'), undefined);
-        document.cookie = 'bad=foo; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
-    });
-
-    it('should decode percent characters case insensitively', function () {
-        document.cookie = 'c=%d0%96';
-        assert.strictEqual(Cookies.get('c'), 'Ж');
+    it('should support percent character in cookie name', function () {
+        Cookies.set('%ok', 'foo');
+        assert.strictEqual(Cookies.get('%ok'), 'foo');
     });
 
     it('should read all when cookies exist', function () {
@@ -64,27 +71,6 @@ describe('read', function () {
 
     it('should return an empty object when there are no cookies', function () {
         assert.deepEqual(Cookies.getAll(), {});
-    });
-
-    it('should support RFC 6265 - reading cookie-octet enclosed in DQUOTE', function () {
-        document.cookie = 'c="v"';
-        assert.strictEqual(Cookies.get('c'), 'v');
-    });
-
-    it('should not throw error when an unrelated cookie name has malformed encoding', function () {
-        document.cookie = '%A1=foo';
-        document.cookie = 'c=v';
-        assert.strictEqual(Cookies.get('c'), 'v');
-        assert.deepEqual(Cookies.getAll(), {c: 'v'});
-        document.cookie = '%A1=foo; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
-    });
-
-    it('should not throw error when an unrelated cookie value has malformed encoding', function () {
-        document.cookie = 'invalid=%A1';
-        document.cookie = 'c=v';
-        assert.strictEqual(Cookies.get('c'), 'v');
-        assert.deepEqual(Cookies.getAll(), {c: 'v'});
-        Cookies.remove('invalid', {path: ''});
     });
 });
 
@@ -234,17 +220,16 @@ describe('value encoding', function () {
     afterEach(cleanup);
 
     let specialValues = [
-        {val: '"', plain: '%22', name: 'double quote'},
-        {val: '"v', plain: '%22v', name: 'value starting wtih a double quote'},
-        {val: 'v"', plain: 'v%22', name: 'value ending wtih a double quote'},
-        {val: ' ', plain: '%20', name: 'space'},
-        {val: ',', plain: '%2C', name: 'comma'},
+        {val: '"', plain: '"', name: 'double quote'},
+        {val: '"v', plain: '"v', name: 'value starting with a double quote'},
+        {val: 'v"', plain: 'v"', name: 'value ending with a double quote'},
+        {val: ',', plain: ',', name: 'comma'},
         {val: ';', plain: '%3B', name: 'semicolon'},
         {val: ';;', plain: '%3B%3B', name: 'multiple semicolons'},
-        {val: '\\', plain: '%5C', name: 'backslash'},
+        {val: '\\', plain: '\\', name: 'backslash'},
         {val: '#', plain: '#', name: 'sharp'},
         {val: '$', plain: '$', name: 'dollar sign'},
-        {val: '%', plain: '%25', name: 'percent character'},
+        {val: '%', plain: '%', name: 'percent character'},
         {val: '&', plain: '&', name: 'ampersand'},
         {val: '+', plain: '+', name: 'plus sign'},
         {val: ':', plain: ':', name: 'colon character'},
@@ -262,9 +247,9 @@ describe('value encoding', function () {
         {val: '}', plain: '}', name: 'closing curly bracket'},
         {val: '|', plain: '|', name: 'pipe character'},
         {val: '{{', plain: '{{', name: 'multiple curly brackets'},
-        {val: 'ã', plain: '%C3%A3', name: 'two-byte character'},
-        {val: '₯', plain: '%E2%82%AF', name: 'three-byte character'},
-        {val: '𩸽', plain: '%F0%A9%B8%BD', name: 'four-byte character'},
+        {val: 'ã', plain: 'ã', name: 'two-byte character'},
+        {val: '₯', plain: '₯', name: 'three-byte character'},
+        {val: '𩸽', plain: '𩸽', name: 'four-byte character'},
     ];
 
     specialValues.forEach(namedVal => {
@@ -280,39 +265,37 @@ describe('name encoding', function () {
     afterEach(cleanup);
 
     let specialKeys = [
-        {key: '(', plain: '%28', name: 'opening parens character'},
-        {key: ')', plain: '%29', name: 'closing parens character'},
-        {key: '(())', plain: '%28%28%29%29', name: 'replacing parens globally'},
-        {key: '<', plain: '%3C', name: 'less-than character'},
-        {key: '>', plain: '%3E', name: 'greater-than character'},
-        {key: '@', plain: '%40', name: 'at character'},
-        {key: ',', plain: '%2C', name: 'comma'},
+        {key: '(', plain: '(', name: 'opening parens character'},
+        {key: ')', plain: ')', name: 'closing parens character'},
+        {key: '(())', plain: '(())', name: 'replacing parens globally'},
+        {key: '<', plain: '<', name: 'less-than character'},
+        {key: '>', plain: '>', name: 'greater-than character'},
+        {key: '@', plain: '@', name: 'at character'},
+        {key: ',', plain: ',', name: 'comma'},
         {key: ';', plain: '%3B', name: 'semicolon'},
-        {key: ':', plain: '%3A', name: 'colon character'},
-        {key: '\\', plain: '%5C', name: 'backslash character'},
-        {key: '"', plain: '%22', name: 'double quote character'},
-        {key: '/', plain: '%2F', name: 'slash character'},
-        {key: '[', plain: '%5B', name: 'opening square bracket'},
-        {key: ']', plain: '%5D', name: 'closing square bracket'},
-        {key: '?', plain: '%3F', name: 'question mark'},
+        {key: ':', plain: ':', name: 'colon character'},
+        {key: '\\', plain: '\\', name: 'backslash character'},
+        {key: '"', plain: '"', name: 'double quote character'},
+        {key: '/', plain: '/', name: 'slash character'},
+        {key: '[', plain: '[', name: 'opening square bracket'},
+        {key: ']', plain: ']', name: 'closing square bracket'},
+        {key: '?', plain: '?', name: 'question mark'},
         {key: '=', plain: '%3D', name: 'equals sign'},
-        {key: '{', plain: '%7B', name: 'opening curly brackets'},
-        {key: '}', plain: '%7D', name: 'closing curly brackets'},
-        {key: '	', plain: '%09', name: 'horizontal tab character'},
-        {key: ' ', plain: '%20', name: 'space character'},
+        {key: '{', plain: '{', name: 'opening curly brackets'},
+        {key: '}', plain: '}', name: 'closing curly brackets'},
         {key: '.', plain: '.', name: 'period'},
         {key: '#', plain: '#', name: 'sharp character'},
         {key: '$', plain: '$', name: 'dollar sign'},
-        {key: '%', plain: '%25', name: 'percent character'},
+        {key: '%', plain: '%', name: 'percent character'},
         {key: '&', plain: '&', name: 'ampersand character'},
         {key: '+', plain: '+', name: 'plus sign'},
         {key: '^', plain: '^', name: 'caret character'},
         {key: '`', plain: '`', name: 'grave accent character'},
         {key: '|', plain: '|', name: 'pipe character'},
         {key: '||', plain: '||', name: 'multiple pipes'},
-        {key: 'ã', plain: '%C3%A3', name: 'two-byte characters'},
-        {key: '₯', plain: '%E2%82%AF', name: 'three-byte characters'},
-        {key: '𩸽', plain: '%F0%A9%B8%BD', name: 'four-byte characters'},
+        {key: 'ã', plain: 'ã', name: 'two-byte characters'},
+        {key: '₯', plain: '₯', name: 'three-byte characters'},
+        {key: '𩸽', plain: '𩸽', name: 'four-byte characters'},
     ];
 
     specialKeys.forEach(namedVal => {

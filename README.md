@@ -5,7 +5,6 @@ A simple, lightweight module for handling cookies
 
 * Includes TypeScript definitions
 * Works with Webpack, Rollup, and Browserify module bundlers
-* Fully compliant with [RFC 6265](https://tools.ietf.org/html/rfc6265)
 * No dependencies
 * Originally based on js-cookie, but rewritten as a TypeScript module with a lean, type-safe API
 
@@ -198,14 +197,9 @@ Cookies.set('other', 'value', { sameSite: 'lax' });
 
 ## Encoding
 
-This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1)
-compliant. Special characters that are not allowed in the cookie name or
-value are encoded with their UTF-8 Hex equivalent using
+Special characters that are not permitted in the cookie name (";" and "=")
+or cookie value (";") are encoded with their UTF-8 Hex equivalent using
 [percent-encoding](http://en.wikipedia.org/wiki/Percent-encoding).
-
-The only character allowed in cookie names or values that is still encoded
-is the percent (`%`) character. It is escaped in order to interpret
-percent input as literal.
 
 ## Author
 
