@@ -32,30 +32,29 @@ function stringifyAttributes(attributes: CookieAttributes): string {
 
 export function encode(name: string, value: string, attributes: CookieAttributes): string {
     return encodeURIComponent(name)
-            .replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent) // allowed special characters
+            .replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent) // allowed special characters
             .replace(/\(/g, '%28').replace(/\)/g, '%29') // replace opening and closing parens
         + '=' + encodeURIComponent(value)
             // allowed special characters
-            .replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent)
+            .replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent)
         + stringifyAttributes(attributes);
 }
 
 export function parse(cookieString: string): {[name: string]: string} {
     let result: {[name: string]: string} = {};
-    let cookies = cookieString ? cookieString.split('; ') : [];
-    let rdecode = /(%[\dA-F]{2})+/gi;
+    const cookies = cookieString ? cookieString.split('; ') : [];
 
-    for (let i = 0; i < cookies.length; i++) {
-        let parts = cookies[i].split('=');
-        let cookie = parts.slice(1).join('=');
+    for (let cookie of cookies) {
+        const parts = cookie.split('=');
+        let value = parts.slice(1).join('=');
 
-        if (cookie.charAt(0) === '"') {
-            cookie = cookie.slice(1, -1);
+        if (value[0] === '"') {
+            value = value.slice(1, -1);
         }
 
         try {
-            let name = parts[0].replace(rdecode, decodeURIComponent);
-            result[name] = cookie.replace(rdecode, decodeURIComponent);
+            const name = decodeURIComponent(parts[0]);
+            result[name] = value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
         } catch (e) {
             // ignore cookies with invalid name/value encoding
         }
