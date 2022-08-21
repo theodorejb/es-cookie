@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2022-08-21
+### Changed
+- Distributed as a native ES module instead of CommonJS.
+
 ## [1.3.2] - 2020-01-21
 ### Added
 - `CookieAttributes` is now exported from main module for easier usage.
@@ -39,7 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2017-02-05
 - Initial release
 
-[Unreleased]: https://github.com/theodorejb/es-cookie/compare/v1.3.2...HEAD
+[Unreleased]: https://github.com/theodorejb/es-cookie/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/theodorejb/es-cookie/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/theodorejb/es-cookie/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/theodorejb/es-cookie/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/theodorejb/es-cookie/compare/v1.2.0...v1.3.0

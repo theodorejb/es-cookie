@@ -4,14 +4,14 @@
 A simple, lightweight module for handling cookies
 
 * Includes TypeScript definitions
-* Works with Webpack, Rollup, and Browserify module bundlers
-* Fully compliant with [RFC 6265](https://tools.ietf.org/html/rfc6265)
+* Published as a native ES module
+* [RFC 6265](https://tools.ietf.org/html/rfc6265) compliant
 * No dependencies
-* Originally based on js-cookie, but rewritten as a TypeScript module with a lean, type-safe API
+* Originally based on js-cookie, but rewritten in TypeScript with a lean, type-safe API
 
 ## Installation
 
-`npm install es-cookie --save`
+`npm install es-cookie`
 
 ## Usage
 

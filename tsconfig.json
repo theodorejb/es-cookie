@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ES6",
         "noUnusedLocals": true,
         "noImplicitAny": true,
         "strictNullChecks": true,

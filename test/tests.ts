@@ -1,5 +1,6 @@
-import * as Cookies from '../src/es-cookie';
-import * as assert from 'assert';
+import * as Cookies from '../src/es-cookie.js';
+
+const assert = chai.assert;
 
 let cleanup = function () {
     // Remove the cookies created using es-cookie default attributes
