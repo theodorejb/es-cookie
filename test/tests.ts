@@ -59,11 +59,11 @@ describe('read', function () {
     it('should read all when cookies exist', function () {
         Cookies.set('c', 'v');
         Cookies.set('foo', 'bar');
-        assert.deepEqual(Cookies.getAll(), { c: 'v', foo: 'bar' });
+        assert.deepStrictEqual(Cookies.getAll(), { c: 'v', foo: 'bar' });
     });
 
     it('should return an empty object when there are no cookies', function () {
-        assert.deepEqual(Cookies.getAll(), {});
+        assert.deepStrictEqual(Cookies.getAll(), {});
     });
 
     it('should support RFC 6265 - reading cookie-octet enclosed in DQUOTE', function () {
@@ -75,7 +75,7 @@ describe('read', function () {
         document.cookie = '%A1=foo';
         document.cookie = 'c=v';
         assert.strictEqual(Cookies.get('c'), 'v');
-        assert.deepEqual(Cookies.getAll(), {c: 'v'});
+        assert.deepStrictEqual(Cookies.getAll(), {c: 'v'});
         document.cookie = '%A1=foo; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // remove malformed cookie
     });
 
@@ -83,7 +83,7 @@ describe('read', function () {
         document.cookie = 'invalid=%A1';
         document.cookie = 'c=v';
         assert.strictEqual(Cookies.get('c'), 'v');
-        assert.deepEqual(Cookies.getAll(), {c: 'v'});
+        assert.deepStrictEqual(Cookies.getAll(), {c: 'v'});
         Cookies.remove('invalid', {path: ''});
     });
 });
@@ -100,8 +100,8 @@ describe('encode', function () {
         let getAttributeValue = function (createdCookie: string, attributeName: string) {
             let pairs = createdCookie.split('; ');
 
-            for (let i = 0; i < pairs.length; i++) {
-                let split = pairs[i].split('=');
+            for (let pair of pairs) {
+                const split = pair.split('=');
 
                 if (split[0] === attributeName) {
                     return split[1];
@@ -220,7 +220,7 @@ describe('remove', function () {
         let attributes = {path: '/'};
         Cookies.set('c', 'v', attributes);
         Cookies.remove('c', attributes);
-        assert.deepEqual(attributes, {path: '/'});
+        assert.deepStrictEqual(attributes, {path: '/'});
     });
 
     it('should remove a secure cookie without extra attributes', function () {
