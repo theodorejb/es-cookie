@@ -18,9 +18,8 @@ function stringifyAttribute(name: string, value: string | boolean | undefined): 
 
 function stringifyAttributes(attributes: CookieAttributes): string {
     if (typeof attributes.expires === 'number') {
-        let expires = new Date();
-        expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
-        attributes.expires = expires;
+        const milliseconds = Math.min(Date.now() + attributes.expires * 864e+5, 864e+13);
+        attributes.expires = new Date(milliseconds);
     }
 
     return stringifyAttribute('Expires', attributes.expires ? attributes.expires.toUTCString() : '')
