@@ -22,6 +22,13 @@ interface BaseCookieAttributes {
      * if it is transmitted over a secure channel (typically HTTP over TLS).
      */
     secure?: boolean;
+
+    /**
+     * If enabled, indicates that the cookie should be stored using partitioned
+     * storage. See Cookies Having Independent Partitioned State (CHIPS) for
+     * more details.
+     */
+    partitioned?: boolean;
 }
 
 type SameSiteCookieAttributes = LaxStrictSameSiteCookieAttributes | NoneSameSiteCookieAttributes;

@@ -26,6 +26,7 @@ function stringifyAttributes(attributes: CookieAttributes): string {
         + stringifyAttribute('Domain', attributes.domain)
         + stringifyAttribute('Path', attributes.path)
         + stringifyAttribute('Secure', attributes.secure)
+        + stringifyAttribute('Partitioned', attributes.partitioned)
         + stringifyAttribute('SameSite', attributes.sameSite);
 }
 

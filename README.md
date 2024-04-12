@@ -174,6 +174,20 @@ Cookies.get('name'); // => 'value'
 Cookies.remove('name');
 ```
 
+### partitioned
+
+Either `true` or `false`, indicating that the cookie should be stored using partitioned storage. See [Cookies Having Independent Partitioned State (CHIPS)](https://developer.mozilla.org/en-US/docs/Web/Privacy/Privacy_sandbox/Partitioned_cookies) for more details.
+
+**Default:** Cookie will not be partitioned.
+
+**Examples:**
+
+```javascript
+Cookies.set('name', 'value', { partitioned: true });
+Cookies.get('name'); // => 'value'
+Cookies.remove('name');
+```
+
 ### sameSite
 
 A string with a value of either `strict`, `lax`, or `none`. When enabled,
