@@ -149,8 +149,8 @@ describe('encode', function () {
     });
 
     it('should support true partitioned option', function () {
-        let actual = Cookies.encode('c', 'v', { partitioned: true });
-        assert.strictEqual(actual, 'c=v; Partitioned');
+        let actual = Cookies.encode('c', 'v', { secure: true, partitioned: true });
+        assert.strictEqual(actual, 'c=v; Secure; Partitioned');
     });
 
     it('should support false partitioned option', function () {

@@ -1,4 +1,4 @@
-export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes;
+export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes & PartitionCookieAttributes;
 
 interface BaseCookieAttributes {
     /**
@@ -53,5 +53,19 @@ interface LaxStrictSameSiteCookieAttributes {
  */
 interface NoneSameSiteCookieAttributes {
     sameSite: 'none';
+    secure: true;
+}
+
+type PartitionCookieAttributes = UnpartitionedCookieAttributes | PartitionedCookieAttributes;
+
+interface UnpartitionedCookieAttributes {
+  partitioned?: false;
+}
+
+/**
+ * Cookies with `Partitioned` must also specify 'Secure'
+ */
+interface PartitionedCookieAttributes {
+    partitioned: true;
     secure: true;
 }
