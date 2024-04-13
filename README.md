@@ -183,7 +183,7 @@ Either `true` or `false`, indicating that the cookie should be stored using part
 **Examples:**
 
 ```javascript
-Cookies.set('name', 'value', { partitioned: true });
+Cookies.set('name', 'value', { secure: true, partitioned: true });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name');
 ```
