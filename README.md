@@ -196,6 +196,21 @@ Cookies.set('name', 'value', { sameSite: 'strict' });
 Cookies.set('other', 'value', { sameSite: 'lax' });
 ```
 
+### partitioned
+
+Either `true` or `false`, indicating that the cookie should be stored using partitioned storage.
+See [Cookies Having Independent Partitioned State (CHIPS)](https://developer.mozilla.org/en-US/docs/Web/Privacy/Privacy_sandbox/Partitioned_cookies) for more details.
+
+**Default:** Cookie will not be partitioned.
+
+**Examples:**
+
+```javascript
+Cookies.set('name', 'value', { secure: true, partitioned: true });
+Cookies.get('name'); // => 'value'
+Cookies.remove('name');
+```
+
 ## Encoding
 
 This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1)

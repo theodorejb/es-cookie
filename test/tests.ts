@@ -148,6 +148,16 @@ describe('encode', function () {
         assert.strictEqual(actual, 'c=v; Path=/');
     });
 
+    it('should support true partitioned option', function () {
+        let actual = Cookies.encode('c', 'v', { secure: true, partitioned: true });
+        assert.strictEqual(actual, 'c=v; Secure; Partitioned');
+    });
+
+    it('should support false partitioned option', function () {
+        let actual = Cookies.encode('c', 'v', { partitioned: false });
+        assert.strictEqual(actual, 'c=v');
+    });
+
     it('should support sameSite option', function() {
         let strict = Cookies.encode('c', 'v', { sameSite: 'strict' });
         assert.strictEqual(strict, 'c=v; SameSite=strict');
