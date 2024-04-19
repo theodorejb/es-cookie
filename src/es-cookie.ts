@@ -1,4 +1,4 @@
-import {CookieAttributes} from './CookieAttributes';
+import {CookieAttributes} from './CookieAttributes.js';
 
 export {CookieAttributes};
 

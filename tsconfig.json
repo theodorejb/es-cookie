@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
-        "module": "ES6",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "forceConsistentCasingInFileNames": true,
         "noUnusedLocals": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
+        "strict": true,
         "declaration": true,
         "lib": [
             "es2015",
