@@ -1,4 +1,4 @@
-export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes & PartitionCookieAttributes;
+export type CookieAttributes = BaseCookieAttributes & SameSiteCookieAttributes & MaybePartitionedCookie;
 
 interface BaseCookieAttributes {
     /**
@@ -22,13 +22,6 @@ interface BaseCookieAttributes {
      * if it is transmitted over a secure channel (typically HTTP over TLS).
      */
     secure?: boolean;
-
-    /**
-     * If enabled, indicates that the cookie should be stored using partitioned
-     * storage. See Cookies Having Independent Partitioned State (CHIPS) for
-     * more details.
-     */
-    partitioned?: boolean;
 }
 
 type SameSiteCookieAttributes = LaxStrictSameSiteCookieAttributes | NoneSameSiteCookieAttributes;
@@ -48,24 +41,26 @@ interface LaxStrictSameSiteCookieAttributes {
     sameSite?: 'strict' | 'lax';
 }
 
-/**
- * Cookies with `SameSite=None` must also specify 'Secure'
- */
+/** Cookies with `SameSite=None` must also specify 'Secure' */
 interface NoneSameSiteCookieAttributes {
     sameSite: 'none';
     secure: true;
 }
 
-type PartitionCookieAttributes = UnpartitionedCookieAttributes | PartitionedCookieAttributes;
+type MaybePartitionedCookie = UnpartitionedCookieAttributes | PartitionedCookieAttributes;
 
 interface UnpartitionedCookieAttributes {
-  partitioned?: false;
+    /**
+     * If enabled, indicates that the cookie should be stored using partitioned storage.
+     */
+    partitioned?: false;
 }
 
-/**
- * Cookies with `Partitioned` must also specify 'Secure'
- */
+/** Cookies with `Partitioned` must also specify 'Secure' */
 interface PartitionedCookieAttributes {
+    /**
+     * Indicates that the cookie should be stored using partitioned storage.
+     */
     partitioned: true;
     secure: true;
 }
