@@ -97,6 +97,12 @@ describe('encode', function () {
         assert.strictEqual(actual, 'c=v; Expires=' + twentyOneDaysFromNow.toUTCString());
     });
 
+    it('should work with expires above the maximum date', function () {
+        let maximum = new Date(864e+13);
+        let actual = Cookies.encode('c', 'v', { expires: 864e+14 });
+        assert.strictEqual(actual, 'c=v; Expires=' + maximum.toUTCString());
+    });
+
     it('should work with expires as fraction of a day', function () {
         let getAttributeValue = function (createdCookie: string, attributeName: string) {
             let pairs = createdCookie.split('; ');
