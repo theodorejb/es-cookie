@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2024-04-19
+### Added
+- Support for experimental `partitioned` cookies.
+
+### Fixed
+- Cookies now expire on the maximum date when `expires` is set to a number larger than the maximum date.
+
+### Changed
+- Improved attribute documentation.
+
 ## [1.4.0] - 2022-08-21
 ### Changed
 - Distributed as a native ES module instead of CommonJS.
@@ -43,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2017-02-05
 - Initial release
 
-[Unreleased]: https://github.com/theodorejb/es-cookie/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/theodorejb/es-cookie/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/theodorejb/es-cookie/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/theodorejb/es-cookie/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/theodorejb/es-cookie/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/theodorejb/es-cookie/compare/v1.3.0...v1.3.1
