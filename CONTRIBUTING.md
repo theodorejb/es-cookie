@@ -6,7 +6,5 @@
 
 ## Testing
 
-After cloning the repository, run `npm install && npm start`.
-Then open a browser to http://localhost:8080/test/browser/ to execute the tests.
-
-After making code changes, run `npm run prepare` in a separate console window before refreshing the browser to ensure all tests still pass.
+After cloning the repository, run `npm install && npm run prepare`.
+Then run `npm run test:browser` to execute the tests in Firefox.

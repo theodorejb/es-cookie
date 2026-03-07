@@ -1,18 +1,18 @@
 {
     "compilerOptions": {
-        "module": "NodeNext",
         "moduleResolution": "NodeNext",
-        "forceConsistentCasingInFileNames": true,
+        "module": "NodeNext",
+        "target": "ESNext",
         "noUnusedLocals": true,
         "strict": true,
         "declaration": true,
         "lib": [
-            "es2015",
-            "dom"
+            "ES2022",
+            "ESNext.Disposable",
+            "DOM"
         ]
     },
     "include": [
-        "src/*.ts",
-        "test/*.ts"
+        "src/*.ts"
     ]
 }

@@ -15,8 +15,8 @@
     "module"
   ],
   "scripts": {
-    "prepare": "tsc",
-    "start": "http-server -c-1"
+    "prepare": "tsc && tsc --project tsconfig.test.json",
+    "test:browser": "vitest"
   },
   "author": {
     "name": "Theodore Brown",
@@ -33,11 +33,7 @@
     "url": "git://github.com/theodorejb/es-cookie.git"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.3",
-    "@types/mocha": "^10.0.6",
-    "chai": "^5.1.0",
-    "http-server": "^14.1.1",
-    "mocha": "^10.0.0",
-    "typescript": "^5.4.5"
+    "@vitest/browser-preview": "^4.0.18",
+    "typescript": "^5.9.3"
   }
 }
