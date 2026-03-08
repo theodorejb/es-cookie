@@ -1,23 +1,25 @@
 # es-cookie
-[![NPM version](https://img.shields.io/npm/v/es-cookie.svg)](https://www.npmjs.org/package/es-cookie)
+[![NPM version](https://img.shields.io/npm/v/es-cookie.svg)](https://www.npmjs.com/package/es-cookie)
 
 A simple, lightweight module for handling cookies
 
 * Includes TypeScript definitions
 * Published as a native ES module
-* [RFC 6265](https://tools.ietf.org/html/rfc6265) compliant
+* [RFC 6265](https://datatracker.ietf.org/doc/html/rfc6265) compliant
 * No dependencies
 * Originally based on js-cookie, but rewritten in TypeScript with a lean, type-safe API
 
 ## Installation
 
-`npm install es-cookie`
+```sh
+npm install es-cookie
+```
 
 ## Usage
 
 Import entire module:
 
-```javascript
+```js
 import * as Cookies from 'es-cookie';
 
 Cookies.set('name', 'value');
@@ -26,7 +28,7 @@ Cookies.get('name'); // => 'value'
 
 Alternatively, just import the functions you need:
 
-```javascript
+```js
 import {set as setCookie, get as getCookie} from 'es-cookie';
 
 setCookie('name', 'value');
@@ -35,7 +37,7 @@ getCookie('name'); // => 'value'
 
 Create a cookie that expires 7 days from now, valid across the entire site:
 
-```javascript
+```js
 Cookies.set('name', 'value', { expires: 7 });
 ```
 
@@ -47,7 +49,7 @@ Creates a new cookie. The first parameter is for the name, and the second
 for the value. The third parameter is optional and allows you to modify
 attributes for the new cookie (see the [Attributes section](#attributes) below).
 
-```javascript
+```js
 // Create an expiring cookie, valid to the path of the current page:
 Cookies.set('name', 'value', { expires: 7, path: '' });
 ```
@@ -56,7 +58,7 @@ Cookies.set('name', 'value', { expires: 7, path: '' });
 
 Returns a single cookie with the specified name, or `undefined` if the cookie doesn't exist.
 
-```javascript
+```js
 Cookies.get('name'); // => 'value'
 Cookies.get('nothing'); // => undefined
 ```
@@ -65,7 +67,7 @@ Cookies.get('nothing'); // => undefined
 
 Returns an object containing all visible cookies.
 
-```javascript
+```js
 Cookies.getAll(); // => { name: 'value' }
 ```
 
@@ -73,27 +75,28 @@ Cookies.getAll(); // => { name: 'value' }
 
 Deletes a single cookie by name.
 
-```javascript
+```js
 Cookies.remove('name');
 ```
 
-*IMPORTANT! When removing a cookie, you must pass the exact same path and
-domain attributes that were used to set the cookie, unless you're using
-the default attributes.*
+> [!IMPORTANT]
+> When removing a cookie, you must pass the exact same path and domain attributes
+> that were used to set the cookie, unless you're using the default attributes.
 
-```javascript
+```js
 Cookies.set('name', 'value', { path: '' });
 Cookies.remove('name'); // fail!
 Cookies.remove('name', { path: '' }); // removed!
 ```
 
-*Note: Removing a nonexistent cookie does not raise an exception or return a value.*
+> [!NOTE]
+> Removing a nonexistent cookie does not raise an exception or return a value.
 
 ### parse
 
 Parses a cookie string (e.g. `document.cookie`) and returns the names/values as an object.
 
-```javascript
+```js
 Cookies.parse('c=v; name=value'); // => {c: 'v', name: 'value'}
 ```
 
@@ -102,7 +105,7 @@ Cookies.parse('c=v; name=value'); // => {c: 'v', name: 'value'}
 Takes a name, value, and attributes object and returns an encoded string
 which can be used to create a new cookie.
 
-```javascript
+```js
 Cookies.encode('c', 'v', {secure: true}); // => 'c=v; Secure'
 ```
 
@@ -120,7 +123,7 @@ To create a cookie that expires in less than a day, use a `Date` object.
 
 **Examples:**
 
-```javascript
+```js
 Cookies.set('name', 'value', { expires: 365 });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name');
@@ -138,7 +141,7 @@ A string indicating the path where the cookie is visible.
 
 **Examples:**
 
-```javascript
+```js
 Cookies.set('name', 'value', { path: '' });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name', { path: '' });
@@ -155,7 +158,7 @@ The cookie will also be visible to all subdomains.
 
 Assuming a cookie that is being created on `site.com`:
 
-```javascript
+```js
 Cookies.set('name', 'value', { domain: 'subdomain.site.com' });
 Cookies.get('name'); // => undefined (need to read at 'subdomain.site.com')
 ```
@@ -168,7 +171,7 @@ Either `true` or `false`, indicating if the cookie transmission requires a secur
 
 **Examples:**
 
-```javascript
+```js
 Cookies.set('name', 'value', { secure: true });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name');
@@ -191,7 +194,7 @@ a link).
 
 **Examples:**
 
-```javascript
+```js
 Cookies.set('name', 'value', { sameSite: 'strict' });
 Cookies.set('other', 'value', { sameSite: 'lax' });
 ```
@@ -199,13 +202,13 @@ Cookies.set('other', 'value', { sameSite: 'lax' });
 ### partitioned
 
 Either `true` or `false`, indicating that the cookie should be stored using partitioned storage.
-See [Cookies Having Independent Partitioned State (CHIPS)](https://developer.mozilla.org/en-US/docs/Web/Privacy/Privacy_sandbox/Partitioned_cookies) for more details.
+See [Cookies Having Independent Partitioned State (CHIPS)](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Privacy_sandbox/Partitioned_cookies) for more details.
 
 **Default:** Cookie will not be partitioned.
 
 **Examples:**
 
-```javascript
+```js
 Cookies.set('name', 'value', { secure: true, partitioned: true });
 Cookies.get('name'); // => 'value'
 Cookies.remove('name');
@@ -213,10 +216,10 @@ Cookies.remove('name');
 
 ## Encoding
 
-This project is [RFC 6265](http://tools.ietf.org/html/rfc6265#section-4.1.1)
+This project is [RFC 6265](https://datatracker.ietf.org/doc/html/rfc6265#section-4.1.1)
 compliant. Special characters that are not allowed in the cookie name or
 value are encoded with their UTF-8 Hex equivalent using
-[percent-encoding](http://en.wikipedia.org/wiki/Percent-encoding).
+[percent-encoding](https://en.wikipedia.org/wiki/Percent-encoding).
 
 The only character allowed in cookie names or values that is still encoded
 is the percent (`%`) character. It is escaped in order to interpret
