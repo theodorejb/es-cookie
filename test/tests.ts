@@ -91,7 +91,7 @@ describe('read', function () {
 describe('encode', function () {
     it('should work with expires as days from now', function () {
         let twentyOneDaysFromNow = new Date();
-        twentyOneDaysFromNow.setDate(twentyOneDaysFromNow.getDate() + 21);
+        twentyOneDaysFromNow.setUTCDate(twentyOneDaysFromNow.getUTCDate() + 21);
         let actual = Cookies.encode('c', 'v', { expires: 21 });
         assert.strictEqual(actual, 'c=v; Expires=' + twentyOneDaysFromNow.toUTCString());
     });
